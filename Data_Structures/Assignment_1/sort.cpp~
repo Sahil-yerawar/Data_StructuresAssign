@@ -1,0 +1,36 @@
+#include<iostream>
+#include<cstdio>
+
+using namespace std;
+
+void selectionSort(int array[200], int size){
+  for(int i = 0; i < size; i++){
+    int min = array[i];
+    for(int j = i; j < size; j++){
+      if(array[j] < min){
+	min = array[j];
+      }
+      array[i] = min;
+    }
+  }
+
+  for(int i = 0; i < size; i++){
+    cout << array[i] << " " ;
+  }
+  cout << endl;
+}
+int main(){
+  int n;
+  while(n < 200 || n == 0){
+    cout << "Enter the size(less than 200)" << endl;
+    cin >> n;
+  }
+    
+   int set[200] = {0};
+   for(int i = 0; i < n;i++){
+     cin >> set[i];
+   }
+   selectionSort(set,n);
+   return 0;
+}
+  
