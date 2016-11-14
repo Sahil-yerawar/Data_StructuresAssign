@@ -1,37 +1,31 @@
+/*Name:- Sahil Yerawar
+  Roll No:- CS15BTECH11044
+  Assignment:- 9
+  Problem :- Implementing 5-way btree*/
+
 #include<iostream>
 using namespace std;
 #include<stdlib.h>
 
-struct node{
-  //struct node* backptr;
+struct node{                                                    //defining node for a btree
+
   int fillcount;
   struct node* children[6];
-  int keys[5];/*
-  struct node*child1;
-  int v1;
-  struct node*child2;
-  int v2;
-  struct node*child3;
-  int v3;
-  struct node*child4;
-  int v4;
-  struct node*child5;
-  int v5;
-  struct node*child6;*/
+  int keys[5];
   int isLeaf;
 };
 
-class btree{
+class btree{                                                    // class for implementing btree
   private:
       struct node* root;
 
 
   public:
-      btree(){
+      btree(){                                                  //constructor for initializing btree
           root = createNode();
 
       }
-      struct node* createNode(){
+      struct node* createNode(){                                //function to create a node
         struct node* x = (struct node*)new node();
         x->fillcount = 0;
         x->isLeaf = 1;
@@ -44,9 +38,9 @@ class btree{
         }
       }
 
-      void insert(int x){
+      void insert(int x){                                       //function to insert a node in a btree
 
-        if(root == NULL){
+        if(root == NULL){                                       // check for empty case
             root = (struct node*)new node();
             root->keys[0] = x;
             root->fillcount = 1;
@@ -67,7 +61,7 @@ class btree{
         }
       }
 
-      void insert_split_child(struct node* a, int c){
+      void insert_split_child(struct node* a, int c){           // sub function to split child in insertio
         struct node* z = (struct node*)new node();
         struct node* y = a->children[c];      // the concerned filled node
         z->isLeaf = y->isLeaf;
@@ -92,7 +86,7 @@ class btree{
 
       }
 
-      void insert_nonfull(struct node* a, int c){
+      void insert_nonfull(struct node* a, int c){               //sub function to insert child in the non full node
         int index = a->fillcount;
         int y = index-1;
         if(a->isLeaf){
@@ -116,7 +110,7 @@ class btree{
         }
       }
 
-      void traverse(struct node* a){
+      void traverse(struct node* a){                            //function to traverse and subsequently print the btree
         int i;
         if( a == NULL){
           cout << "No starting point to begin with" << endl;
@@ -131,8 +125,8 @@ class btree{
         if(a->isLeaf == 0)traverse(a->children[i]);
       }
 
-      struct node* getRoot(){return root;}
-      struct node* search(int x,struct node* t){
+      struct node* getRoot(){return root;}                      //get function to access the root
+      struct node* search(int x,struct node* t){                // function to check whether the value is present or not, thereby giving the node address
         int i = 0;
         while(i < t->fillcount && x > t->keys[i]){
           i++;
@@ -144,7 +138,7 @@ class btree{
         else return search(x,t->children[i]);
       }
 
-      struct node* getParent(int x,struct node* parent,struct node* child){
+      struct node* getParent(int x,struct node* parent,struct node* child){   //function to get the parent of concerned node
         int i = 0;
         //struct node*base = NULL,b = root;
         while(i < child->fillcount && x > child->keys[i]){
@@ -160,7 +154,7 @@ class btree{
           return getParent(x,parent,child);
         }
       }
-      void del(int x,struct node* a){
+      void del(int x,struct node* a){                           //function to delete a value
 int i=0;
 while(i < a->fillcount && a->keys[i] < x){
   i++;
@@ -182,14 +176,14 @@ else{
 }
 }
 
-void remLeaf(int u,struct node* y){
+void remLeaf(int u,struct node* y){                             //function to remove the value from a leaf
   for(int i = u+1;i < y->fillcount;i++){
     y->keys[i-1] = y->keys[i];
   }
   y->fillcount--;
 }
 
-void remNLeaf(int u, struct node* y){
+void remNLeaf(int u, struct node* y){                           //function to remove from non leaf node
   int p = y->keys[u];
   if(y->children[u]->fillcount >= 2){
     int pre = presor(u,y);
@@ -207,7 +201,7 @@ void remNLeaf(int u, struct node* y){
   }
 }
 
-int presor(int a, struct node*b){
+int presor(int a, struct node*b){                               //function to get the predecessor node of the concerned node
   struct node* t = b->children[a];
   while(!(t->isLeaf)){
     t = t->children[t->fillcount];
@@ -216,7 +210,7 @@ int presor(int a, struct node*b){
 }
 
 
-int sucor(int a, struct node*b){
+int sucor(int a, struct node*b){                                //function to find the successor node of the concerned node
   struct node* t = b->children[a+1];
   while(!(t->isLeaf)){
     t = t->children[0];
@@ -224,7 +218,7 @@ int sucor(int a, struct node*b){
   return t->keys[0];
 }
 
-void refill(int u, struct node* a){
+void refill(int u, struct node* a){                            //function to refill the concerned node
   if(u!=0 && a->children[u-1]->fillcount >=2){
     borrPre(u,a);
   }
@@ -237,7 +231,7 @@ void refill(int u, struct node* a){
   }
 }
 
-void borrPre(int x, struct node*y){
+void borrPre(int x, struct node*y){                             //function to borrow from the successor node
   struct node* child = y->children[x],*sibling = y->children[x-1];
   for(int i = child->fillcount-1; i >=0;i--){
     child->keys[i+1] = child->keys[i];
@@ -256,7 +250,7 @@ void borrPre(int x, struct node*y){
   child->fillcount++;
 }
 
-void borrSuc(int x, struct node*y){
+void borrSuc(int x, struct node*y){                             //function to borrow from successor node
   struct node* child = y->children[x],*sibling = y->children[x+1];
   child->keys[child->fillcount] = y->keys[x];
   if(!(child->isLeaf)){
@@ -275,7 +269,7 @@ void borrSuc(int x, struct node*y){
   child->fillcount++;
 }
 
-void merge(int x,struct node* y){
+void merge(int x,struct node* y){                               // function to merge two nodes if they are below the certain value
   struct node* child = y->children[x],*sibling = y->children[x+1];
   child->keys[1] = y->keys[x];
   for(int i = 0; i < sibling->fillcount; i++){

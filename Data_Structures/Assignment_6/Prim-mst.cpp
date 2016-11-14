@@ -1,8 +1,13 @@
+/*Name:- Sahil Yerawar
+  Roll No:- CS15BTECH11044
+  Assignment:- 5
+  Problem :- Finding the minimum spanning tree of a given graph using prim's algorithm
+*/
 #include<iostream>
 using namespace std;
 
 
-struct node{
+struct node{                                                    //declaring a node of the graph
   int val;
   int weight;
   int key;
@@ -12,27 +17,27 @@ struct node{
 
 class max_heap{
   private:
-    struct node**queue;                           // DEFINING the three importamt fields, the array, the length and the
-    int heapsize;                         // heap size. Note:- heapsize <= length.
+    struct node**queue;                               // DEFINING the three importamt fields, the array, the length and the
+    int heapsize;                                     // heap size. Note:- heapsize <= length.
     int length;
 
   public:
-    max_heap(struct node* a[],int x){              // constructor for the class
+    max_heap(struct node* a[],int x){                           // constructor for the class
        queue = a;
        heapsize = x;
        length = x;
     }
 
-    int parent(int i){                    //Determining the parent of a node(i starts from 1)
+    int parent(int i){                                          //Determining the parent of a node(i starts from 1)
       return i/2;
     }
-    int left(int i){                      //Determining the left child  of a node(i starts from 1)
+    int left(int i){                                            //Determining the left child  of a node(i starts from 1)
       return 2*i;
     }
-    int right(int i){                     //Determining the right child of a node(i starts from 1)
+    int right(int i){                                           //Determining the right child of a node(i starts from 1)
       return 2*i + 1;
     }
-    void heapify(int i){                  //It tries to put the considered element in the appropriate position.
+    void heapify(int i){                                        //It tries to put the considered element in the appropriate position.
                                           //Here also i starts from 1
         int l = left(i),largest;          // Determining the left and right child
         int r = right(i);
@@ -58,10 +63,10 @@ class max_heap{
 
     }
 
-    struct node**getQueue(){                       //helper function to get array
+    struct node**getQueue(){                                    //helper function to get array
       return this->queue;
     }
-    void build_heap(){                     //constructs max-heap from the array
+    void build_heap(){                                          //constructs max-heap from the array
       heapsize = length;
       for(int i = length/2; i > 0; i--){
         heapify(i);
@@ -118,19 +123,19 @@ class max_heap{
 };
 
 
-struct node**vertices,**vertices1;
+struct node**vertices,**vertices1;                              //declaring a set of vertices
 
-class graph{
+class graph{                                                    //declring a class of a graph
   private:
      struct node**array;
      int edgeCount;
   public:
-    graph(struct node*x[]){
+    graph(struct node*x[]){                                     //constructor for graph object
       array = x;
       edgeCount = 0;
     }
     struct node* b;
-    void addEdge(struct node* arr[2]){
+    void addEdge(struct node* arr[2]){                          //function to add an edge in the graph
       if(checkEdge(arr) == -1){
       for(struct node* a = this->array[(arr[0]->val)-1]; a != NULL; a = a->ptr){
         if(a->ptr == NULL){
@@ -152,7 +157,7 @@ class graph{
             cout << "Edge already exists" << endl;
           }
     }
-    void deleteEdge(struct node* arr[2]){
+    void deleteEdge(struct node* arr[2]){                       //function to delete an edge in the graph
       if(checkEdge(arr) == 1){
         cout << "boo" << endl;
         for(struct node* a = this->array[(arr[0]->val)-1]; a != NULL; a = a->ptr){
@@ -187,7 +192,7 @@ class graph{
         }
 
 
-    struct node* createNode(int x,int y){
+    struct node* createNode(int x,int y){                       //function to create a node
       struct node* f = (struct node*)new node;
       f->val = x;
       f->weight = y;
@@ -196,10 +201,10 @@ class graph{
       f->ptr = NULL;
 
     }
-    struct node ** getvertices(){
+    struct node ** getvertices(){                               //function to get the list of vertices
       return array;
     }
-    int checkEdge(struct node* arr[2]){
+    int checkEdge(struct node* arr[2]){                         //function to check whether the edge exists or not
 
       for(struct node* a = this->array[(arr[1]->val)-1]; a != NULL; a = a->ptr){
                 if(a->val  == arr[0]->val){
@@ -210,10 +215,10 @@ class graph{
               return -1;
     }
 
-    int getEdgeCount(){
+    int getEdgeCount(){                                         //function which returns the number of edges
       return edgeCount;
     }
-    void changeEdgeCount(int x){
+    void changeEdgeCount(int x){                                //function to change the edgeCount
       edgeCount = x;
     }
 
@@ -225,9 +230,8 @@ int main(){
   cin >> x;
   vertices = new struct node*[x];
   vertices1 = new struct node*[x];
-  graph g(vertices);
+  graph g(vertices);                                            //declaring two graphs, one for input of values and other for get the mst from the first one
   graph circle(vertices1);
-  //int edgeQueue[][3]
   struct node* queue[x];
   for(int i = 0; i < x; i++){
     struct node* p = g.createNode(0,0);
@@ -237,7 +241,6 @@ int main(){
     queue[i] = p;
     queue[i]->val = i+1;
   }
-//  (g.getvertices()[0])->key = 0;
   queue[0]->key = 0;
   int n,a,b,c,idx = 0,p;
   struct node* edge[2];
@@ -285,12 +288,12 @@ int main(){
   }
 
 
-  max_heap heap(queue,x);
-  heap.build_heap();
+  max_heap heap(queue,x);                                       //building a heap of the edges
+  heap.build_heap();                                            //calling build heap
 
 
 
-  while(heap.getHeapsize() != 0){
+  while(heap.getHeapsize() != 0){                               //prim's algorithm to select the edges of the MST
     struct node*u = heap.heap_remove_max();
     if(u->parent != 0){
       struct node * edge[2];
@@ -323,7 +326,7 @@ int main(){
 
 
 
-  for(int i = 0; i < x; i++){
+  for(int i = 0; i < x; i++){                                   //printing the MST            
     cout << "1st order relatives of " << i+1 << ":- " << endl;
     for(struct node* boo = circle.getvertices()[i]; boo != NULL; boo = boo->ptr ){
       cout << boo->val <<"(" << boo->weight << ")"<<" " ;

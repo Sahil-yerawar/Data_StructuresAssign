@@ -1,8 +1,13 @@
+/*Name:- Sahil Yerawar
+  Roll No:- CS15BTECH11044
+  Assignment:- 5
+  Problem :- implementing red-black tree
+*/
 #include<iostream>
 using namespace std;
 
-enum Color {red,black};
-struct node{
+enum Color {red,black};                                         //defining a map for colour to integer
+struct node{                                                    //declaring a structure for node in a rbTree
   int val;
   struct node* left;
   struct node* right;
@@ -10,17 +15,17 @@ struct node{
   Color color;
 };
 
-class RBTree{
+class RBTree{                                                   //declaring a class for red black tree
   private:
     struct node* root;
     struct node* nil;
 
   public:
-    RBTree(){
+    RBTree(){                                                   //constructor for initializing the object
       nil = createNode();
       root = nil;
     }
-    struct node* createNode(){
+    struct node* createNode(){                                  //function to create a node
       struct node * x = (struct node*)new node;
       x->left = nil;
       x->right = nil;
@@ -29,7 +34,7 @@ class RBTree{
       return x;
 
     }
-    void left_rotate(struct node*x){
+    void left_rotate(struct node*x){                             //function to left rotate a red black tree
       struct node* y = x->right;
       x->right = y->left;
       if(y->left != nil){
@@ -47,7 +52,7 @@ class RBTree{
       x->parent = y;
     }
 
-    void right_rotate(struct node*x){
+    void right_rotate(struct node*x){                           //function to right rotate a red black tree
       struct node* y = x->left;
       x->left = y->right;
       if(y->right != nil){
@@ -65,7 +70,7 @@ class RBTree{
       x->parent = y;
     }
 
-    void insert_fixup(struct node* z){
+    void insert_fixup(struct node* z){                          //fixing function to restore the properties of the red black tree
         while(z->parent->color == red){
           if(z->parent == z->parent->parent->left){
             struct node* y = z->parent->parent->right;
@@ -107,7 +112,7 @@ class RBTree{
 
 
 
-    void insert(struct node* x){
+    void insert(struct node* x){                                //function to insert a node in the red black tree
       struct node*y = nil;
       struct node*p = root;
       while(p != nil){
@@ -134,18 +139,21 @@ class RBTree{
       insert_fixup(x);
     }
 
-    void inorder(struct node* x){
+    void inorder(struct node* x){                               //inorder traversal of the red black tree
       if(x != nil){
         inorder(x->left);
-        cout << x->val << "(" << x->color << ")" << " " ;
+        if(x->color == 1)
+        cout << x->val << "(black)" << " " ;
+
+        else cout << x->val << "(red)" << " " ;
         inorder(x->right);
       }
 
     }
-    struct node* getRoot(){
+    struct node* getRoot(){                                     //get function to access the red black tree
       return root;
     }
-    struct node* search(int value){
+    struct node* search(int value){                             //function to search the value in the red black tree
       struct node* x = root,*y = nil;
       while(x != nil){
         if(x->val == value){
@@ -164,7 +172,7 @@ class RBTree{
         return nil;
       }
     }
-    struct node* minimum(struct node* x){
+    struct node* minimum(struct node* x){                       //function to find the node with minimum value in the red black tree
       struct node* y = nil;
       while(x != nil){
         y = x;
@@ -174,7 +182,7 @@ class RBTree{
 
     }
 
-    struct node* maximum(struct node* x){
+    struct node* maximum(struct node* x){                       //function to find the node with maximum value in the red black tree
       struct node* y = NULL;
       while(x != NULL){
         y = x;
@@ -183,26 +191,26 @@ class RBTree{
       return y;
 
     }
-    struct node* successor(struct node* s){
+    struct node* successor(struct node* s){                     //function to find the node with value just more than the concerned node
       if(s->right != NULL){
         return minimum(s->right);
       }
       return NULL;
     }
 
-    struct node* predecessor(struct node* s){
+    struct node* predecessor(struct node* s){                   //function to find the node with vlaue just less than the concerned node
       if(s->left != NULL){
         return maximum(s->left);
       }
       return NULL;
     }
-    int getParent(int Value){
+    int getParent(int Value){                                   //function to get the parent node of the given node
       struct node* x = search(Value);
       if(x == NULL) return -2;
       if(x->parent != NULL) return (x->parent)->val;
       else return -1;
     }
-    void transplant(struct node*x, struct node*y){
+    void transplant(struct node*x, struct node*y){              //function to transplant the given nodes
       if(x->parent == nil){
         root = y;
       }
@@ -213,7 +221,7 @@ class RBTree{
       y->parent = x->parent;
     }
 
-    void delete_fixup(struct node*x){
+    void delete_fixup(struct node*x){                           //fixup function to restore the properties of the red black tree
       struct node* w;
       while(x != root && x->color == black){
         if(x == x->parent->left){
@@ -267,7 +275,7 @@ class RBTree{
       }
       x->color = black;
     }
-    void del(int value){
+    void del(int value){                                        //function to delete a value from the red black tree
 
       struct node* x = search(value);
 

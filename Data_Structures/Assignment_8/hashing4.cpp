@@ -1,21 +1,26 @@
+/*Name:- Sahil Yerawar
+  Roll No:- CS15BTECH11044
+  Assignment:- 8
+  Problem 4:- Implementing hashing using quadratic probing
+  */
 #include<iostream>
 using namespace std;
 
 
 
-struct node{
+struct node{                                                    //declaring a node structure
   int value;
   int fillStatus;         //0 for purely empty, 1 for filled,2 for previously filled but empty now
 
 };
 
 
-class hashLinear{
+class hashLinear{                                               //declaring a class of hash table using quaratic probing
   private:
     struct node*table[13];
 
   public:
-    hashLinear(){
+    hashLinear(){                                               //constructor to initialize the object
       for(int i = 0; i < 13;i++){
         table[i] = createNode();
 
@@ -23,19 +28,19 @@ class hashLinear{
 
     }
 
-    struct node* createNode(){
+    struct node* createNode(){                                  //function to create a node
       struct node* x = (struct node*)new node();
       x->value = 0;
       x->fillStatus = 0;
     }
-    int hashFunction(int x){
+    int hashFunction(int x){                                    //primary hash function
       return x%7;
     }
-    int linearProb(int x,int i){
+    int linearProb(int x,int i){                                //main function to be used fror quadratic probing
       return (hashFunction(x)+i*i)%13;
     }
 
-    void insert(int x){
+    void insert(int x){                                         //function to insert a value in the hash table
       int a = linearProb(x,0);
       if(table[a]->fillStatus == 0 || table[a]->fillStatus == 2){
         table[a]->value = x;table[a]->fillStatus = 1;
@@ -57,7 +62,7 @@ class hashLinear{
       }
     }
 
-    void display(){
+    void display(){                                             //function to display all the values in the hash table
       for(int i = 0; i < 13; i++){
         if(table[i]->fillStatus != 1){
         cout <<"Index "<< i << ":- "<< "No data present"<<endl;
@@ -68,7 +73,7 @@ class hashLinear{
       }
     }
 
-    int search(int x){
+    int search(int x){                                          //function to search a value in the hash table
       int a = linearProb(x,0),p = 0;
       if(table[a]->fillStatus == 1 && table[a]->value == x){
         p = 1;return a;
@@ -89,7 +94,7 @@ class hashLinear{
       }
     }
 
-  void del(int x){
+  void del(int x){                                              //function to delete a vlaue in the hash table
     int a = search(x);
     if(x != -1){
       table[a]->fillStatus = 2;

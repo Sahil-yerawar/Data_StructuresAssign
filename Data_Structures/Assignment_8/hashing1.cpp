@@ -1,32 +1,37 @@
+/*Name:- Sahil Yerawar
+  Roll No:- CS15BTECH11044
+  Assignment:- 8
+  Problem 1:- Implementing hashing using link list
+  */
 #include<iostream>
 #include<stdlib.h>
 using namespace std;
 
-struct node{
+struct node{                                                    //structure node for hashing purposes
   int value;
   struct node* next;
   struct node* prev;
 };
 
-int hashFunction(int x){
+int hashFunction(int x){                                        //Defining hash function(The array is of size 5)
   return x%5;
 }
 
-class hashLinkList{
+class hashLinkList{                                             //declaring hashed link list class
   private:
     struct node*table[5];
     struct node*head[5];
 
 
   public:
-    hashLinkList(){
+    hashLinkList(){                                             //constructor for initializing the object
       for(int i  = 0; i < 5; i++){
         table[i]  = NULL;
-        head[i] = NULL;//createNode();
+        head[i] = NULL;
       }
     }
 
-    struct node* createNode(){
+    struct node* createNode(){                                  //function to create a node
       struct node* x = (struct node*)new node;
       x->value = -10000;
       x->next = NULL;
@@ -34,11 +39,11 @@ class hashLinkList{
       return x;
     }
 
-    int hashFunction(int x){
+    int hashFunction(int x){                                    //
       return x%5;
     }
 
-    void insert(int a){
+    void insert(int a){                                         //function to insert a value in the hashed link list
       int x = hashFunction(a);
       if(table[x] == NULL){
         table[x] = createNode();
@@ -61,7 +66,7 @@ class hashLinkList{
       }
     }
 
-    void display(){
+    void display(){                                             //function to display the hashed link list
       for(int i = 0; i<5;i++){
         cout<<"index "<<i<<":- ";
         if(table[i] == NULL){
@@ -76,7 +81,7 @@ class hashLinkList{
       }
     }
 
-    struct node* search(int x){
+    struct node* search(int x){                                 //function to search an element in the hashed link list
       int a = hashFunction(x),p=0;
       struct node*o;
       for(struct node*r = table[a];r!=NULL;r = r->next){
@@ -92,7 +97,7 @@ class hashLinkList{
       return o;
     }
 
-    void del(int x){
+    void del(int x){                                            //function to delelte an element in the hashed link list
       struct node*b = search(x);
       struct node*a = b;
       for(int i = 0; i < 5; i++){
