@@ -1,21 +1,21 @@
 /*Name:- Sahil Yerawar
   Roll No:- CS15BTECH11044
   Assignment:- 5
-  Problem 1:- Implementing Heapsort algorithm
-  Problem 2:- Implementing Maximum priority queue
+
+  Problem 2:- Implementing minimum priority queue
 */
 
 #include<iostream>
 using namespace std;
-    /*Defining a class of max-heap(we define the heap to have a size of 15 for now)*/
-class max_heap{
+    /*Defining a class of min-heap(we define the heap to have a size of 15 for now)*/
+class min_heap{
   private:
     int *queue;                           // DEFINING the three importan  t fields, the array, the length and the
     int heapsize;                         // heap size. Note:- heapsize <= length.
     int length;
 
   public:
-    max_heap(int a[],int x){              // constructor for the class
+    min_heap(int a[],int x){              // constructor for the class
        queue = a;
        heapsize = x;
        length = 15;
@@ -36,11 +36,11 @@ class max_heap{
         int r = right(i);
 
         /*Determining among the node, its left child and its right child, the greatest of the three*/
-        if( l <= heapsize && queue[l-1]> queue[i-1]){
+        if( l <= heapsize && queue[l-1]< queue[i-1]){
           largest = l-1;
         }
         else largest = i-1;
-        if(r <=heapsize && queue[r-1] > queue[largest]){
+        if(r <=heapsize && queue[r-1] < queue[largest]){
           largest = r-1;
 
         }
@@ -59,39 +59,23 @@ class max_heap{
     int *getQueue(){                       //helper function to get array
       return this->queue;
     }
-    void build_heap(){                     //constructs max-heap from the array
+    void build_heap(){                     //constructs min-heap from the array
       //heapsize = length;
       for(int i = heapsize/2; i > 0; i--){
         heapify(i);
       }
     }
-    void heapsort() {                       //Uses max heap to sort the array
-      build_heap();
-      int i = heapsize;
-      int q = heapsize;
-      while(i > 1){
-
-        int temp = queue[i-1];
-        queue[i-1] = queue[0];
-        queue[0] = temp;
-        heapsize--;
-        heapify(1);
-        i--;
-      }
-      heapsize = q;
-    }
-
-    int heap_max(){                           //returns max element
+    int heap_min(){                           //returns min element
       return queue[0];
     }
 
-    int heap_remove_max(){                    // removes the maximum element and returns it
+    int heap_remove_min(){                    // removes the minimum element and returns it
       if(heapsize < 1) return -1;
-      int max = queue[0];
+      int min = queue[0];
       queue[0] = queue[heapsize-1];
       heapsize--;
       heapify(1);
-      return max;
+      return min;
     }
     int heap_inc_value(int i, int k){         // Increases the value of a particular node and puts it in correct position
       if(k < queue[i-1]) return -1;
@@ -122,10 +106,10 @@ int main(){
   for(int i = 0; i < 15; i++){
     cin >> array[i];
   }
-  max_heap heap(array,15);                        // declaring the max-heap class
+  min_heap heap(array,15);                        // declaring the min-heap class
   int h,g,m;
   while(1){                                       // Menu for modifying the heap
-    cout << "***Menu***\n1.Build a max heap\n2.Apply Heapsort on it\n3.Priority Queue- get Maximum\n4.Priority Queue- Remove Maximum\n5.Priority Queue- Insert a value\n" << endl;
+    cout << "***Menu***\n1.Build a min heap\n2.Priority Queue- get minimum\n3.Priority Queue- Remove minimum\n4.Priority Queue- Insert a value\n" << endl;
     cin >> h;
     switch (h) {
       case 1:
@@ -137,24 +121,26 @@ int main(){
       cout << endl;
       break;
 
-      case 2:
+      /*case 2:
       heap.heapsort();
       for(int i = 0; i < heap.getHeapsize(); i++){
         cout<<(heap.getQueue())[i]<< " ";
       }
       cout << endl;
       break;
+      */
+
+      case 2:
+      heap.build_heap();
+      cout << heap.heap_min() << endl;
+      break;
 
       case 3:
       heap.build_heap();
-      cout << heap.heap_max() << endl;
-      break;
-
-      case 4:
-      heap.build_heap();
-      m = heap.heap_remove_max();
+      m = heap.heap_remove_min();
       if(m != -1){
       cout << "The element removed is " << m << endl;
+      heap.build_heap();
       for(int i = 0; i < heap.getHeapsize(); i++){
         cout<<(heap.getQueue())[i]<< " ";
       }
@@ -162,11 +148,12 @@ int main(){
       else cout << "Heap underflow" << endl;
       break;
 
-      case 5:
+      case 4:
       heap.build_heap();
       cout << "Enter the positive integer to be added" << endl;
       cin >> g;
       heap.heap_insert(g);
+      heap.build_heap();
       for(int i = 0; i < heap.getHeapsize(); i++){
         cout<<(heap.getQueue())[i]<< " ";
       }

@@ -61,7 +61,7 @@ void insertSort(int a[200][3],int size){
 	a[j][2] = a[j-1][2];
   a[j][1] = a[j-1][1];
   a[j][0] = a[j-1][0];
-	//a[j-1] = temp;
+	
 	j--;
       }
       a[j][2] = val;
@@ -69,11 +69,7 @@ void insertSort(int a[200][3],int size){
       a[j][0] = val2;                                 // When it finds the element, it does final swapping  so that it is placed in order.
     }
   }
-}/*
-  cout << "The sorted array is:- " << endl;
-  for(int j = 0; j < size; j++){        // Printing of array within the program
-    cout << a[j] << " " ;}
-  cout << endl;*/
+}
 }
 
  struct node**vertices;                                         //declaring the adjacency list
@@ -111,9 +107,9 @@ class graph{                                                    //declaring the 
     }
     void deleteEdge(struct node* arr[2]){                       //function to delete an edge in the adjacency list
       if(checkEdge(arr) == 1){
-        cout << "boo" << endl;
+
         for(struct node* a = this->array[(arr[0]->val)-1]; a != NULL; a = a->ptr){
-          cout << "boo" << endl;
+
           if((a->ptr)->val == arr[1]->val){
             struct node* b = a->ptr;
             a->ptr = b->ptr;
@@ -127,7 +123,7 @@ class graph{                                                    //declaring the 
 
           for(struct node* a = this->array[(arr[1]->val)-1]; a != NULL; a = a->ptr){
             if((a->ptr)->val == arr[0]->val){
-              cout << "boo" << endl;
+
               struct node* b = a->ptr;
               a->ptr = b->ptr;
               b->ptr = NULL;
@@ -136,7 +132,7 @@ class graph{                                                    //declaring the 
             }
           }
           edgeCount--;
-          //b->ptr = arr[0];
+
           }
           else{
             cout << "The edge not found" << endl;
@@ -242,27 +238,13 @@ if(idx != 0){
     if((g.getvertices()[i])->ptr != NULL){
 
     for(struct node*s = (g.getvertices()[i])->ptr; s != NULL; s = s->ptr){
-      //cout << "boo" << endl;
-      /*int w = 0;
-      for(int j = 0; j < q+1; j++){
-        if(edgeSet[q][0] ==  s->val){w = 1;break;}
-      }*/
       if(i+1 < s->val){
       edgeSet[q][0] = i+1;
       edgeSet[q][1] = s->val;
       edgeSet[q][2] = s->weight;
       q++;
 
-      /*edg[0] = g.createNode(i+1,s->weight);
-      edg[1] = s;
-      struct node*q = s;
-      cout << "boo" << endl;
-      g.deleteEdge(edg);
-      s = q;*/
 
-      /*int doof = g.getEdgeCount();
-      doof--;
-      g.changeEdgeCount(doof);*/
     }
     else{
       cout << ":P" << endl;
@@ -294,23 +276,10 @@ for(int i = 0; i < x; i++){
 dSet depc(DSet);                                                //kruskal's algorithm below
 for(int i = 0; i < ad; i++){
   if(depc.Find(edgeSet[i][0]-1) != depc.Find(edgeSet[i][1]-1)){
-    //dSet[edgeSet[i][1]-1] = dSet[edgeSet[i][0]-1];
-    cout << "(" << edgeSet[i][0] << "," << edgeSet[i][1] <<"," << edgeSet[i][2] << ")" << " ";
+    eSet[i][2] << ")" << " ";
     depc.Union(edgeSet[i][0]-1,edgeSet[i][1]-1);
   }
-/*  else{
-    edgeSet[i][0] = 0;
-    edgeSet[i][1] = 0;
-    edgeSet[i][2] = 0;
-  }*/
 }
-cout << endl;/*
-for(int i = 0; i < ad; i++){
-  cout << "(" << edgeSet[i][0] << "," << edgeSet[i][1] <<"," << edgeSet[i][2] << ")" << " ";
-}*/
-
-
-
+cout << endl;
 return 2;
-
 }

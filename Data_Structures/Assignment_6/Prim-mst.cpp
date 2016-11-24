@@ -67,8 +67,8 @@ class max_heap{
       return this->queue;
     }
     void build_heap(){                                          //constructs max-heap from the array
-      heapsize = length;
-      for(int i = length/2; i > 0; i--){
+      //heapsize = length;
+      for(int i = heapsize/2; i > 0; i--){
         heapify(i);
       }
     }
@@ -171,7 +171,7 @@ class graph{                                                    //declring a cla
           }
         }
 
-        //b->ptr = arr[1];
+
 
           for(struct node* a = this->array[(arr[1]->val)-1]; a != NULL; a = a->ptr){
             if((a->ptr)->val == arr[0]->val){
@@ -184,7 +184,7 @@ class graph{                                                    //declring a cla
             }
           }
           edgeCount--;
-          //b->ptr = arr[0];
+
           }
           else{
             cout << "The edge not found" << endl;
@@ -242,7 +242,7 @@ int main(){
     queue[i]->val = i+1;
   }
   queue[0]->key = 0;
-  int n,a,b,c,idx = 0,p;
+  int n,a,b,c,idx = 0,p=0;
   struct node* edge[2];
   while(1){
     if(p == 1)break;
@@ -252,6 +252,10 @@ int main(){
       case 1:
       cout << "Enter the source vertex, then destination vertex to be added and the weight" << endl;
       cin >> a >> b >> c;
+      if(a <= 0 || b <= 0 || c < 0){
+        cout<<"Sorry, negative numbered and zero vertices and negative weights are not accpetable here!"<<endl;
+        break;
+      }
       edge[0] = g.createNode(a,c);
       edge[1] = g.createNode(b,c);
       g.addEdge(edge);
@@ -320,13 +324,14 @@ int main(){
 
       }
 
-      heap.heapify(1);
+      //heap.heapify(1);
+      heap.build_heap();
   }
 
 
 
 
-  for(int i = 0; i < x; i++){                                   //printing the MST            
+  for(int i = 0; i < x; i++){                                   //printing the MST
     cout << "1st order relatives of " << i+1 << ":- " << endl;
     for(struct node* boo = circle.getvertices()[i]; boo != NULL; boo = boo->ptr ){
       cout << boo->val <<"(" << boo->weight << ")"<<" " ;

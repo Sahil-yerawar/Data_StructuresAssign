@@ -83,7 +83,8 @@ class RBTree{                                                   //declaring a cl
             else if(z->parent->right == z){
               z = z->parent;
               left_rotate(z);
-
+            }
+            else {
               z->parent->color = black;
               z->parent->parent->color = red;
               right_rotate(z->parent->parent);
@@ -91,7 +92,7 @@ class RBTree{                                                   //declaring a cl
           }
           else{
             struct node* y = z->parent->parent->left;
-            if(y->color = red){
+            if(y->color == red){
               z->parent->color = black;
               y->color  = black;
               z->parent->parent->color = red;
@@ -100,7 +101,7 @@ class RBTree{                                                   //declaring a cl
             else if(z->parent->left == z){
               z = z->parent;
               right_rotate(z);
-
+            }else{
               z->parent->color = black;
               z->parent->parent->color = red;
               left_rotate(z->parent->parent);
@@ -241,6 +242,7 @@ class RBTree{                                                   //declaring a cl
             w->color = red;
             right_rotate(w);
             w = x->parent->right;
+          }else{
             w->color = x->parent->color;
             x->parent->color = black;
             w->right->color = black;
@@ -265,6 +267,7 @@ class RBTree{                                                   //declaring a cl
             w->color = red;
             left_rotate(w);
             w = x->parent->left;
+          }else{
             w->color = x->parent->color;
             x->parent->color = black;
             w->left->color = black;

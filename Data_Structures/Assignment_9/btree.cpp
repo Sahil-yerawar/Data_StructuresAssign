@@ -12,7 +12,7 @@ struct node{                                                    //defining node 
   int fillcount;
   struct node* children[6];
   int keys[5];
-  int isLeaf;
+  int isLeaf;                                         //0 for not leaf, 1 for leaf
 };
 
 class btree{                                                    // class for implementing btree
@@ -29,11 +29,11 @@ class btree{                                                    // class for imp
         struct node* x = (struct node*)new node();
         x->fillcount = 0;
         x->isLeaf = 1;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 4; i++){
           x->keys[i] = -1;
 
         }
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 5; i++){
           x->children[i] = NULL;
         }
       }
@@ -61,7 +61,7 @@ class btree{                                                    // class for imp
         }
       }
 
-      void insert_split_child(struct node* a, int c){           // sub function to split child in insertio
+      void insert_split_child(struct node* a, int c){           // sub function to split child in insertion
         struct node* z = (struct node*)new node();
         struct node* y = a->children[c];      // the concerned filled node
         z->isLeaf = y->isLeaf;
@@ -69,8 +69,8 @@ class btree{                                                    // class for imp
         z->keys[0] = y->keys[3];
 
         if(y->isLeaf == 0){
-          z->children[0] = y->children[4];
-          z->children[1] = y->children[5];
+          z->children[0] = y->children[3];
+          z->children[1] = y->children[4];
         }
         y->fillcount = 2;
         for(int i = 5;i > c;i--){
@@ -114,6 +114,7 @@ class btree{                                                    // class for imp
         int i;
         if( a == NULL){
           cout << "No starting point to begin with" << endl;
+          return;
         }
         for(i = 0; i < a->fillcount; i++){
           if(a->isLeaf == 0){
@@ -154,52 +155,52 @@ class btree{                                                    // class for imp
           return getParent(x,parent,child);
         }
       }
-      void del(int x,struct node* a){                           //function to delete a value
-int i=0;
-while(i < a->fillcount && a->keys[i] < x){
-  i++;
-}
+  void del(int x,struct node* a){                           //function to delete a value
+    int i=0;
+    while(i < a->fillcount && a->keys[i] < x){
+        i++;
+      }
 
-if(i < a->fillcount && a->keys[i] == x){
-  if(a->isLeaf)remLeaf(i,a);
-  else remNLeaf(i,a);
-}
-else{
-  if(a->isLeaf){cout << "The value "<<x<<" is not present in the tree"<<endl;return;}
+      if(i < a->fillcount && a->keys[i] == x){
+        if(a->isLeaf)remLeaf(i,a);
+        else remNLeaf(i,a);
+      }
+      else{
+        if(a->isLeaf){cout << "The value "<<x<<" is not present in the tree"<<endl;return;}
 
-  if((a->children[i])->fillcount < 2)refill(i,a);
+        if((a->children[i])->fillcount < 2)refill(i,a);
 
-  if(i == a->fillcount && i > a->fillcount){
-    del(x,a->children[i-1]);
-  }
-  else del(x,a->children[i]);
-}
-}
+        if(i == a->fillcount &&  i > a->fillcount){
+          del(x,a->children[i-1]);
+        }
+        else del(x,a->children[i]);
+      }
+    }
 
-void remLeaf(int u,struct node* y){                             //function to remove the value from a leaf
-  for(int i = u+1;i < y->fillcount;i++){
-    y->keys[i-1] = y->keys[i];
-  }
-  y->fillcount--;
-}
+    void remLeaf(int u,struct node* y){                             //function to remove the value from a leaf
+      for(int i = u+1;i < y->fillcount;i++){
+        y->keys[i-1] = y->keys[i];
+      }
+      y->fillcount--;
+    }
 
-void remNLeaf(int u, struct node* y){                           //function to remove from non leaf node
-  int p = y->keys[u];
-  if(y->children[u]->fillcount >= 2){
-    int pre = presor(u,y);
-    y->keys[u] = pre;
-    del(pre,y->children[u]);
-  }
-  else if(y->children[u+1]->fillcount >= 2){
-    int suc = sucor(u,y);
-    y->keys[u] = suc;
-    del(suc,y->children[u+1]);
-  }
-  else{
-    merge(u,y);
-    del(p,y->children[u]);
-  }
-}
+    void remNLeaf(int u, struct node* y){                           //function to remove from non leaf node
+      int p = y->keys[u];
+      if(y->children[u]->fillcount >= 2){
+        int pre = presor(u,y);
+        y->keys[u] = pre;
+        del(pre,y->children[u]);
+      }
+      else if(y->children[u+1]->fillcount >= 2){
+        int suc = sucor(u,y);
+        y->keys[u] = suc;
+        del(suc,y->children[u+1]);
+      }
+      else{
+        merge(u,y);
+        del(p,y->children[u]);
+      }
+    }
 
 int presor(int a, struct node*b){                               //function to get the predecessor node of the concerned node
   struct node* t = b->children[a];
@@ -281,7 +282,7 @@ void merge(int x,struct node* y){                               // function to m
     }
   }
   for(int i = x+1; i < y->fillcount;i++){
-    y->keys[x-1] = y->keys[x];
+    y->keys[i-1] = y->keys[i];
   }
   for(int i = x+2; i <= y->fillcount;i++){
     y->children[i-1] = y->children[i];
@@ -304,23 +305,40 @@ int main(){
         cout << "Enter integer to be inserted" << endl;
         cin >> x;
         bin.insert(x);
+        cout<<"********"<<endl;
+        bin.traverse(bin.getRoot());
+        cout << endl;
+        cout<<"********"<<endl;
         break;
 
       case 2:
-        bin.traverse(bin.getRoot());
-        cout << endl;break;
+
+      cout<<"********"<<endl;
+      bin.traverse(bin.getRoot());
+      cout << endl;
+      cout<<"********"<<endl;break;
 
 
       case 3:
       cout << "Enter integer to be searched" << endl;
       cin >> x;
       bin.search(x,bin.getRoot());
+
+      cout<<"********"<<endl;
+      bin.traverse(bin.getRoot());
+      cout << endl;
+      cout<<"********"<<endl;
       break;
 
       case 4:
       cout << "Enter integer to be deleted" << endl;
       cin >> x;
       bin.del(x,bin.getRoot());
+
+      cout<<"********"<<endl;
+      bin.traverse(bin.getRoot());
+      cout << endl;
+      cout<<"********"<<endl;
       break;
 
       default:
